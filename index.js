@@ -23,7 +23,7 @@ exports.handler = function(event, context, callback) {
     event.Records[0].s3.object.key.replace(/\+/g, ' ')
   );
   var dstBucket = srcBucket + '-resized';
-  var dstKey = 'resized-' + srcKey;
+  var dstKey = srcKey;
 
   // Sanity check: validate that source and destination are different buckets.
   if (srcBucket == dstBucket) {
@@ -83,7 +83,8 @@ exports.handler = function(event, context, callback) {
             Bucket: dstBucket,
             Key: dstKey,
             Body: data,
-            ContentType: contentType
+            ContentType: contentType,
+            ACL: 'public-read'
           },
           next
         );
